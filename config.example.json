@@ -1,0 +1,9 @@
+{
+    "botToken": "",
+    "selfToken": "",
+    "clientId": "",
+    "guildId": "",
+    "ownerId": "",
+    "mongoUri": "mongodb+srv://:@..mongodb.net/?retryWrites=true&w=majority&appName=xxxxxx",
+    "enableAddFriend": true
+}

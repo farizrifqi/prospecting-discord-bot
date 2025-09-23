@@ -22,7 +22,10 @@ const client = new Client({
   ],
 });
 const clientSelf = new ClientSelf({});
+
+// To prevent duplicate
 let lastSentMerchant = 0;
+let lastSentEvent = 0;
 
 client.commands = new Collection();
 client.cooldowns = new Collection();
@@ -102,10 +105,7 @@ clientSelf.on("messageCreate", async (message) => {
     } catch (error) {
       console.error("Failed to read embeds", error);
     }
-  } else if (
-    channelId === PROSPECTING_TRACKER_CHANNEL_ID &&
-    getTime() - lastSentMerchant > 900
-  ) {
+  } else if (channelId === PROSPECTING_TRACKER_CHANNEL_ID) {
     /**
      * Listen Channel #Tracker
      */
@@ -114,7 +114,10 @@ clientSelf.on("messageCreate", async (message) => {
       if (embeds && embeds.length > 0) {
         const fields = embeds[0]?.fields;
         if (fields) {
-          if (message.embeds[0]?.title == "Traveling Merchant") {
+          if (
+            message.embeds[0]?.title == "Traveling Merchant" &&
+            getTime() - lastSentMerchant > 900
+          ) {
             const result = message.embeds.flatMap((item) =>
               item.fields.map((bItem) => bItem.value)
             );
@@ -148,10 +151,14 @@ clientSelf.on("messageCreate", async (message) => {
               coreMerchantProcess(client, message.embeds, tier);
               lastSentMerchant = getTime();
             }
-          } else if (message.embeds[0]?.title == "Global Event Started") {
+          } else if (
+            message.embeds[0]?.title == "Global Event Started" &&
+            getTime() - lastSentEvent > 900
+          ) {
             console.log(`Global event detected`);
             const [event] = fields.map((f) => f.value);
             console.log(`Global event:`, event);
+            lastSentEvent = getTime();
 
             if (event) {
               coreEventProcess(client, event);

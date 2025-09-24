@@ -40,6 +40,7 @@ async function ensureServer(Server, interaction) {
     server = await Server.create({
       guildId: interaction.guild.id,
       name: interaction.guild.name,
+      membersCount: interaction.guild.memberCount ?? 0,
     });
   }
   return server;

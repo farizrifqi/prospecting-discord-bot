@@ -8,6 +8,7 @@ module.exports = {
       server = await Server.create({
         guildId: guild.id,
         name: guild.name,
+        membersCount: guild.memberCount ?? 0,
       });
       console.log(`✅ Added new server: ${guild.name} (${guild.id})`);
     } else {

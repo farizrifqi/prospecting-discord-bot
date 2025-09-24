@@ -9,7 +9,7 @@ const path = require("node:path");
 const fs = require("node:fs");
 const config = require("./config.json");
 
-const { token, clientId, guildId } = config;
+const { botToken, clientId, guildId } = config;
 
 const commands = [];
 const foldersPath = path.join(__dirname, "commands");
@@ -36,7 +36,7 @@ for (const folder of commandFolders) {
 }
 
 // Construct and prepare an instance of the REST module
-const rest = new REST().setToken(token);
+const rest = new REST().setToken(botToken);
 (async () => {
   try {
     console.log(

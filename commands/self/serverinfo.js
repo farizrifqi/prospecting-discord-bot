@@ -63,6 +63,7 @@ module.exports = {
             content.push(
               `Global Event mention: ${globalEventInfo.mentionRole}`
             );
+            content.push(`List Events: ${globalEventInfo.events.join(", ")}`);
           }
           await interaction.editReply({
             content: content.join("\n"),

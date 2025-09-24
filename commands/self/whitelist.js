@@ -35,6 +35,20 @@ module.exports = {
             content: `✅ Server ${guildCache.name} \`${inputGuildId}\` successfully _**whitelisted**_.`,
             flags: MessageFlags.Ephemeral,
           });
+          const owner = await interaction.client.users.fetch(
+            guildCache.ownerId
+          );
+          if (owner) {
+            owner
+              .send(
+                `Your server **${guildCache.name}** has been whitelisted. You can now set up the bot using the commands \`/config\` in your server.`
+              )
+              .catch((e) => {
+                console.error(`Unable to send DM to ${owner.tag}`, e);
+              });
+          } else {
+            console.log("Unable to fetch owner for guild " + guildCache.id);
+          }
         } else {
           await interaction.editReply({
             content: `Unable to update guild ${inputGuildId}`,

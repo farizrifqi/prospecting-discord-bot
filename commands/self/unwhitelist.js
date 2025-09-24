@@ -39,9 +39,23 @@ module.exports = {
         );
         if (serverUpdate) {
           await interaction.editReply({
-            content: `✅ Server ${guildCache.name} \`${inputGuildId}\` successfully **UNwhitelisted**.`,
+            content: `✅ Server ${guildCache.name} \`${inputGuildId}\` successfully **Unwhitelisted**.`,
             flags: MessageFlags.Ephemeral,
           });
+          const owner = await interaction.client.users.fetch(
+            guildCache.ownerId
+          );
+          if (owner) {
+            owner
+              .send(
+                `Your server **${guildCache.name}** has been removed from whitelist. Your server no longer can receive notifications.`
+              )
+              .catch((e) => {
+                console.error(`Unable to send DM to ${owner.tag}`, e);
+              });
+          } else {
+            console.log("Unable to fetch owner for guild " + guildCache.id);
+          }
         } else {
           await interaction.editReply({
             content: `Unable to update guild ${inputGuildId}`,
